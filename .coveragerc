@@ -1,0 +1,11 @@
+[run]
+source =
+    recordits
+[report]
+omit =
+    #versioning
+    .*version.*
+    *_version.py
+    #tests
+    *test*
+    recordits/tests/*
