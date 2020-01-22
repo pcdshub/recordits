@@ -14,7 +14,7 @@ Recording points for LCLS-II
 Documentation
 -------------
 
-Sphinx-generated documentation for this project can be found here:
+Documentation for this project can be found here:
 https://pcdshub.github.io/recordits/
 
 
@@ -33,10 +33,3 @@ Running the Tests
 ::
 
   $ python run_tests.py
-   
-Directory Structure
--------------------
-
-This repo is based the PCDS python cookiecutter. See the following github page for more info:
-
-- `cookiecutter-pcds-python <https://github.com/pcdshub/cookiecutter-pcds-python>`_
