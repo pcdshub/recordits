@@ -1,12 +1,10 @@
-"""
-This document and its single test are included only so that first-time builds
-with doctr will succeed and create an empty document.
-"""
+import pytest
 import logging
 
 
 logger = logging.getLogger(__name__)
 
 
+@pytest.mark.xfail
 def test_blank():
     raise ZeroDivisionError()
