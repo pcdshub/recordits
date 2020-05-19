@@ -16,11 +16,11 @@ record(bo, "$(BASE_PV):RecordIt:Record") {
     info(archive, "VAL")
 }
 
-record(calcout, "$(BASE_PV):RecordIt:Calc") {
+record(calcout, "$(BASE_PV):RecordIt:CondCalc") {
     # TODO: add in heartbeat check
     field(DESC, "Gate recording of value")
     # All bits set OR timed override mode
-    field(CALC, "(A == 31) || (B > 0)")
+    field(CALC, "(A = 31) || (B > 0)")
     field(INPA, "$(BASE_PV):RecordIt:RawCondition CP MS")
     field(INPB, "$(BASE_PV):RecordIt:TimedOverride CP MS")
     field(OUT, "$(BASE_PV):RecordIt:Record PP MS")
