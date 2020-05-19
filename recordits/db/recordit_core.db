@@ -3,7 +3,9 @@
 #
 # Required Macros:
 #   BASE_PV: The PV to enable recordits for - must be scalar, integer/float.
-
+#   GATE_PV: Gate recording based on this PV. A standard config using
+#            recordit_conditions.db would be: $(BASE_PV):RecordIt:Record
+#
 # Optional macros:
 #   TPRO:    Enable trace processing (defaults to 0)
 
@@ -11,7 +13,7 @@ record(calcout, "$(BASE_PV):RecordIt:Calc") {
     # Update output when gated
     field(OOPT, "When Non-zero")
     field(CALC, "B")
-    field(INPB, "$(BASE_PV):RecordIt:Gate PP MS")
+    field(INPB, "$(GATE_PV) PP MS")
 
     # Outputting the value from "A" (i.e., "$(BASE_PV)")
     field(DOPT, "Use OCAL")
@@ -29,14 +31,6 @@ record(calcout, "$(BASE_PV):RecordIt:Calc") {
     # Invalid output action: do nothing
     field(IVOA, "Don't drive outputs")
     field(TPRO, "$(TPRO=0)")
-}
-
-record(calc, "$(BASE_PV):RecordIt:Gate") {
-    field(DESC, "Gate recording of value")
-    # TODO
-    field(CALC, "1")
-    field(PINI, "YES")
-    info(archive, "VAL")
 }
 
 # Mirror the original PV's archiver deadband settings

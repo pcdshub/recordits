@@ -2,7 +2,7 @@
 #
 # Required Macros:
 #   BASE_PV: The PV to enable recordits for - must be scalar, integer/float.
-
+#
 # Optional macros:
 #   TPRO:    Enable trace processing (defaults to 0)
 

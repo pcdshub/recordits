@@ -1,0 +1,74 @@
+# RecordIt conditions.
+#
+# Though bound in name to a single PV, the "$(BASE_PV):RecordIt:Record" may be
+# reused for other RecordIts as the "GATE_PV".
+#
+# Required Macros:
+#   BASE_PV: The primary PV to enable recordits conditions for.
+#
+# Optional macros:
+#   TPRO:    Enable trace processing (defaults to 0)
+
+record(bo, "$(BASE_PV):RecordIt:Record") {
+    field(DESC, "Should BASE_PV be recorded?")
+    field(ZNAM, "Record off")
+    field(ONAM, "Record on")
+    info(archive, "VAL")
+}
+
+record(calcout, "$(BASE_PV):RecordIt:Calc") {
+    field(DESC, "Gate recording of value")
+    field(CALC, "(A == 31) || (B > 0)")
+    field(INPA, "$(BASE_PV):RecordIt:RawCondition CP MS")
+    field(INPB, "$(BASE_PV):RecordIt:TimedOverride CP MS")
+    field(OUT, "$(BASE_PV):RecordIt:Record PP MS")
+}
+
+record(calcout, "$(BASE_PV):RecordIt:TimedOverride") {
+    field(DESC, "Timed override of the calculation")
+    # ... which counts down from the given value, down to 0.
+    field(CALC, "A > 0 ? A - 1 : 0")
+    field(INPA, "$(BASE_PV):RecordIt:TimedOverride.VAL NPP")
+    field(VAL, "0")
+    field(SCAN, "1 second")
+    field(PINI, "YES")
+}
+
+
+record(longin, "$(BASE_PV):RecordIt:RawCondition") {
+    # Raw condition, fanned out for debugging to individual
+    # ":Condition([0-9]+)" records.
+    field(VAL, "0")
+}
+
+record(calc, "$(BASE_PV):RecordIt:Condition0") {
+    field(CALC, "(A & 1)")
+    field(INPA, "$(BASE_PV):RecordIt:RawCondition CP MS")
+    # field(ZNAM, "Fail")
+    # field(ONAM, "Pass")
+    info(archive, "VAL DESC")
+}
+
+record(calc, "$(BASE_PV):RecordIt:Condition1") {
+    field(CALC, "(A & 2) >> 1")
+    field(INPA, "$(BASE_PV):RecordIt:RawCondition CP MS")
+    info(archive, "VAL DESC")
+}
+
+record(calc, "$(BASE_PV):RecordIt:Condition2") {
+    field(CALC, "(A & 4) >> 2")
+    field(INPA, "$(BASE_PV):RecordIt:RawCondition CP MS")
+    info(archive, "VAL DESC")
+}
+
+record(calc, "$(BASE_PV):RecordIt:Condition3") {
+    field(CALC, "(A & 8) >> 3")
+    field(INPA, "$(BASE_PV):RecordIt:RawCondition CP MS")
+    info(archive, "VAL DESC")
+}
+
+record(calc, "$(BASE_PV):RecordIt:Condition4") {
+    field(CALC, "(A & 16) >> 4")
+    field(INPA, "$(BASE_PV):RecordIt:RawCondition CP MS")
+    info(archive, "VAL DESC")
+}
