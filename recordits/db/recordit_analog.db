@@ -1,0 +1,28 @@
+# An analog input value to record with RecordIts
+#
+# Required Macros:
+#   BASE_PV: The PV to enable recordits for - must be scalar, integer/float.
+
+# Optional macros:
+#   TPRO:    Enable trace processing (defaults to 0)
+
+record(ai, "$(BASE_PV):RecordIt:Value") {
+    field(INP, "$(BASE_PV):RecordIt:Calc.OVAL MS")
+    field(TSEL, "$(BASE_PV):RecordIt:Calc.TIME")
+    info(archive, "VAL")
+}
+
+# Mirror the original PV's precision, falling back to 0 (assume integer)
+record(calcout, "$(BASE_PV):RecordIt:Prec") {
+    field(DESC, "Precision settings")
+    field(CALC, "A")
+    field(INPA, "$(BASE_PV).PREC CP MS")
+
+    # Invalid output action: set the output to value in IVOV on failure
+    field(IVOA, "Set output to IVOV")
+    field(IVOV, "0")
+
+    field(OUT, "$(BASE_PV):RecordIt:Value.PREC")
+    field(PINI, "YES")
+    field(TPRO, "$(TPRO=0)")
+}
