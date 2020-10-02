@@ -3,13 +3,13 @@ dist: xenial
 sudo: false
 
 
-env: 
+env:
    global:
       - OFFICIAL_REPO="pcdshub/recordits"
       # Doctr deploy key for pcdshub/recordits
       - secure: "mAUQDrqGU9GnP6DUiAdI7eGXuXQb3T4Um6uArTT5Nn7anu4973VSSJl+HCnsIKzsD0ScahQNO0aR5i+FEYQJ3gKfwUz8L4ua6wMb+qlnRoadJoQKBFSteQrDpuZNOclEZQOlhr/HoVkti9ljwlXORALrIxEih4Q6LM/nurw7iBOdkP5fbM59eA9kx5XFa7L+2KCK7zssOzOk0+sXRO0GJDbRpr2GgebbmVc7H2YNaVbDILOQkVVRRW+H3C7r8S0P6bKON5gOds9SOA4RIBpN46MptL6w00NXnbmZQxy9UQtUzGnI0tKddwjf3/FNEytkBrpr8u84Gy/x1IdijJ4UAxxhGhIyF7r5PLfduAFeNaXM97uvISsbrUNQ9dcm7Vbd+1smmPJMsteMFP1C8hTMZS7y/LKE98WlJK4BKcW04IEnOtczXMFMggUdN2DlINKldczkIxfaBvJlyqCJaevTBxqMicocjn/0c9NjzaPZ8TRxr8RZVs6UoV36pYpC72B95uhqlVnAjrY5qBAEPc4o851NagvoZ8wwptMQsqSMHuPjnxLtW4AGwWQqXgc2XqCkz0TV/zq0CZ+Wgh4FwFpPw8HC+B4538ouTSeciTfVd680/Re/wwIyXdCl0NAYqh35bsJfHHxhHvB35/8JuzEcZlMkHjrY+yXj0jFoI+43Ths="
 
-matrix: 
+matrix:
   fast_finish: true
   include:
     - name: Style checking
@@ -45,7 +45,7 @@ install:
   - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
   - bash miniconda.sh -b -p $HOME/miniconda
   - source $HOME/miniconda/etc/profile.d/conda.sh
-  - conda activate base  
+  - conda activate base
   - conda config --set always_yes yes --set changeps1 no
 
   # Ensure all packages are up-to-date
@@ -84,10 +84,10 @@ script:
     if [[ $UNIT_TEST ]]; then
       coverage report -m
     fi
-  
+
   - |
     if [[ -n "$DOCTR_DEPLOY_ENCRYPTION_KEY_PCDSHUB_RECORDITS" && $BUILD_DOCS ]]; then
-      # Create HTML documentation  
+      # Create HTML documentation
       set -e
       pushd docs
       make html
@@ -96,7 +96,7 @@ script:
       doctr deploy . --built-docs docs/build/html --deploy-branch-name gh-pages --command "touch .nojekyll; git add .nojekyll"
       set +e
     fi
-   
+
 
 after_success:
   - |

@@ -1,0 +1,49 @@
+# Core of a RecordIt - must be used in conjunction with `recordit_analog.db` or
+# `recordit_integer.db`.
+#
+# Required Macros:
+#   BASE_PV: The PV to enable recordits for - must be scalar, integer/float.
+#   GATE_PV: Gate recording based on this PV. A standard config using
+#            recordit_conditions.db would be: $(BASE_PV):RecordIt:Record
+#
+# Optional macros:
+#   TPRO:    Enable trace processing (defaults to 0)
+
+record(calcout, "$(BASE_PV):RecordIt:Calc") {
+    # Update output when gated
+    field(OOPT, "When Non-zero")
+    field(CALC, "B")
+    field(INPB, "$(GATE_PV) PP MS")
+
+    # Outputting the value from "A" (i.e., "$(BASE_PV)")
+    field(DOPT, "Use OCAL")
+    field(OCAL, "A")
+    field(INPA, "$(BASE_PV) CP MS")
+
+    # Use the timestamp from the base PV
+    # NOTE: counter-intuitively, this does not require `.TIME` field to exist!
+    field(TSEL, "$(BASE_PV).TIME CP MS")
+
+    # Cause :Value to process and pick up value/timestamp
+    field(OUT, "$(BASE_PV):RecordIt:Value.PROC")
+    # alternatively: field(OUT, "$(BASE_PV):RecordIt:Value PP MS")
+
+    # Invalid output action: do nothing
+    field(IVOA, "Don't drive outputs")
+    field(TPRO, "$(TPRO=0)")
+}
+
+# Mirror the original PV's archiver deadband settings
+record(calcout, "$(BASE_PV):RecordIt:Adel") {
+    field(DESC, "Archiver deadband settings")
+    field(CALC, "A")
+    field(INPA, "$(BASE_PV).ADEL CP MS")
+
+    # Invalid output action: set the output to value in IVOV on failure
+    field(IVOA, "Set output to IVOV")
+    field(IVOV, "0")
+
+    field(OUT, "$(BASE_PV):RecordIt:Value.ADEL")
+    field(PINI, "YES")
+    field(TPRO, "$(TPRO=0)")
+}
